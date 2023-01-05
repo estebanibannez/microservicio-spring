@@ -8,7 +8,7 @@
 
 pool: "Default"
 
-# config azure machine
+# config azure machine test
 # pool:
 #   vmImage: ubuntu-latest
 

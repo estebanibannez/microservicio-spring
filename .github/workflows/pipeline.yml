@@ -21,7 +21,9 @@ jobs:
         with:
           java-version: "11"
           distribution: temurin
-      # install packages
+      # install & run Maven packages
+      - name: Install Maven
+        uses: yuzhiyongcn/setup-maven@v1.0.0
       - run: |
           chmod +x mvn
       # Escaner con SonarCloud

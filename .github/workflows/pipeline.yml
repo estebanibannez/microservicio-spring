@@ -36,21 +36,21 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
       # Escaner con SonarCloud
-      - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN:
-            ${{ secrets.GITHUB_TOKEN }}
-            # SonarCloud access token should be generated from https://sonarcloud.io/account/security/
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      # - name: SonarCloud Scan
+      #   uses: sonarsource/sonarcloud-github-action@master
+      #   env:
+      #     GITHUB_TOKEN:
+      #       ${{ secrets.GITHUB_TOKEN }}
+      #       # SonarCloud access token should be generated from https://sonarcloud.io/account/security/
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       # Compilación proyecto con maven
-      # - name: Build and analyze SonarCloud
-      #   run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Pcoverage
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     # SonarCloud access token should be generated from https://sonarcloud.io/account/security/
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Build and analyze SonarCloud
+        run: mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=IbanezStudio_DevOps-foundation-v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # SonarCloud access token should be generated from https://sonarcloud.io/account/security/
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       # Guardar package en build/libs
       - name: save JAR

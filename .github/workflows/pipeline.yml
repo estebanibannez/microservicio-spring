@@ -21,6 +21,9 @@ jobs:
         with:
           java-version: "11"
           distribution: temurin
+      # install packages
+      - run: |
+          chmod +x gradlew
       # Escaner con SonarCloud
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
@@ -29,8 +32,6 @@ jobs:
             ${{ secrets.GITHUB_TOKEN }}
             # SonarCloud access token should be generated from https://sonarcloud.io/account/security/
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      - run: |
-          chmod +x gradlew
       # Compilación proyecto con gradle
       - name: Build with Gradle
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1

@@ -23,7 +23,7 @@ jobs:
           distribution: temurin
       # install packages
       - run: |
-          chmod +x maven
+          chmod +x mvn
       # Escaner con SonarCloud
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master

@@ -1,5 +1,5 @@
 ---
-name: SonarCloud pipeline
+name: SONARCLOUD pipeline
 on:
   push:
     branches:

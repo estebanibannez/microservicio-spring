@@ -1,5 +1,5 @@
 ---
-name: Java CI with Gradle pipeline
+name: JAVA CI WITH MAVEN pipeline
 on:
   push:
     branches:
@@ -36,14 +36,23 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
       # Escaner con SonarCloud
-      # - name: SonarCloud Scan
-      #   uses: sonarsource/sonarcloud-github-action@master
-      #   env:
-      #     GITHUB_TOKEN:
-      #       ${{ secrets.GITHUB_TOKEN }}
-      #       # SonarCloud access token should be generated from https://sonarcloud.io/account/security/
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN:
+            ${{ secrets.GITHUB_TOKEN }}
+            # SonarCloud access token should be generated from https://sonarcloud.io/account/security/
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: .
+          args: >
+            -Dsonar.organization=IbanezStudio
+            -Dsonar.projectKey=IbanezStudio_DevOps-foundation-v3
+            -Dsonar.python.coverage.reportPaths=coverage.xml
+            -Dsonar.sources=lib/
+            -Dsonar.test.exclusions=tests/**
+            -Dsonar.tests=tests/
+            -Dsonar.verbose=true
       # Compilación proyecto con maven
       - name: Build and analyze SonarCloud
         run: mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=IbanezStudio_DevOps-foundation-v3

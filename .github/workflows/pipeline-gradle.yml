@@ -1,4 +1,4 @@
-name: Java CI with Gradle PIPELINE
+name: JAVA CI WITH Gradle PIPELINE
 
 on:
   push:

@@ -31,13 +31,23 @@ jobs:
         restore-keys: ${{ runner.os }}-sonar
 
        # Escaner con SonarCloud
-    - name: SonarCloud Scan
+    - name: Analyze with SonarCloud
       uses: sonarsource/sonarcloud-github-action@master
       env:
-        GITHUB_TOKEN:
-          ${{ secrets.GITHUB_TOKEN }}
-          # SonarCloud access token should be generated from https://sonarcloud.io/account/security/
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            GITHUB_TOKEN:
+              ${{ secrets.GITHUB_TOKEN }}
+              # SonarCloud access token should be generated from https://sonarcloud.io/account/security/
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        projectBaseDir: .
+        args: >
+          -Dsonar.organization=IbanezStudio
+          -Dsonar.projectKey=IbanezStudio_DevOps-foundation-v3
+          -Dsonar.python.coverage.reportPaths=coverage.xml
+          -Dsonar.sources=lib/
+          -Dsonar.test.exclusions=tests/**
+          -Dsonar.tests=tests/
+          -Dsonar.verbose=true
         
     #Permisos de ejecucion a gradlew
     - run: | 

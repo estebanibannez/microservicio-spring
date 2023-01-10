@@ -102,17 +102,11 @@ steps:
 - task: KubectlInstaller@0
   inputs:
     kubectlVersion: 'latest'
-
-# - task: Kubernetes@1
-#   inputs:
-#     connectionType: 'None'
-#     namespace: 'default'
-#     command: 'apply'
-#     arguments: '-f deployment-app.yaml'
       
 - task: Kubernetes@1
   inputs:
     connectionType: 'Kubernetes Service Connection'
+    kubernetesServiceEndpoint: 'kubernetesConnection'
     namespace: 'default'
     command: 'login'
   displayName: AKS Login
@@ -120,6 +114,7 @@ steps:
 - task: Kubernetes@1
   inputs:
     connectionType: 'Kubernetes Service Connection'
+    kubernetesServiceEndpoint: 'kubernetesConnection'
     namespace: 'default'
     command: 'apply'
     arguments: '-f kubernetes/deployment-app.yaml'
@@ -131,6 +126,7 @@ steps:
 - task: Kubernetes@1
   inputs:
     connectionType: 'Kubernetes Service Connection'
+    kubernetesServiceEndpoint: 'kubernetesConnection'
     namespace: 'default'
     command: 'expose'
     arguments: 'deployment microservice-spring-deployment --type=LoadBalancer --name=devops-usach'

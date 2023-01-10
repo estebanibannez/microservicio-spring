@@ -99,9 +99,9 @@ steps:
     tags: 'latest'
   displayName: DOCKER PUSH IMAGE
 
-# - task: KubectlInstaller@0
-#   inputs:
-#     kubectlVersion: 'latest'
+- task: KubectlInstaller@0
+  inputs:
+    kubectlVersion: 'latest'
 
 # - task: Kubernetes@1
 #   inputs:
@@ -109,3 +109,50 @@ steps:
 #     namespace: 'default'
 #     command: 'apply'
 #     arguments: '-f deployment-app.yaml'
+      
+- task: Kubernetes@1
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscriptionEndpoint: 'azure(b7138765-0e9b-4a25-84e7-938471f7d1ed)'
+    azureResourceGroup: 'aks-devops-usach'
+    kubernetesCluster: 'aks-devops-usach'
+    namespace: 'default'
+    command: 'login'
+  displayName: AKS Login
+
+- task: Kubernetes@1
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscriptionEndpoint: 'azure(b7138765-0e9b-4a25-84e7-938471f7d1ed)'
+    azureResourceGroup: 'aks-devops-usach'
+    kubernetesCluster: 'aks-devops-usach'
+    namespace: 'default'
+    command: 'apply'
+    arguments: '-f kubernetes/deployment-app.yaml'
+    secretType: 'dockerRegistry'
+    containerRegistryType: 'Azure Container Registry'
+    azureSubscriptionEndpointForSecrets: 'azure(b7138765-0e9b-4a25-84e7-938471f7d1ed)'
+  displayName: AKS deploy
+    
+- task: Kubernetes@1
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscriptionEndpoint: 'azure(b7138765-0e9b-4a25-84e7-938471f7d1ed)'
+    azureResourceGroup: 'aks-devops-usach'
+    kubernetesCluster: 'aks-devops-usach'
+    namespace: 'default'
+    command: 'expose'
+    arguments: 'deployment petclinic-deployment --type=LoadBalancer --name=devops-usach'
+    secretType: 'dockerRegistry'
+    containerRegistryType: 'Azure Container Registry'
+  continueOnError: true
+  displayName: Expose deployment
+    
+- script: |
+    ipApp=$(kubectl get services devops-usach --output jsonpath='{.status.loadBalancer.ingress[0].ip}')
+    echo $ipApp
+    URLApp=http://$ipApp:8080
+    echo $URLApp
+    echo "##vso[task.setvariable variable=appDeploy;isOutput=true]$URLApp"
+  name: getip
+  displayName: Get IP

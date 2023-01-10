@@ -118,9 +118,9 @@ steps:
     namespace: 'default'
     command: 'apply'
     arguments: '-f kubernetes/deployment-app.yaml'
-    secretType: 'dockerRegistry'
-    containerRegistryType: 'Azure Container Registry'
-    azureSubscriptionEndpointForSecrets: 'azure(b7138765-0e9b-4a25-84e7-938471f7d1ed)'
+    # secretType: 'dockerRegistry'
+    # containerRegistryType: 'Azure Container Registry'
+    # azureSubscriptionEndpointForSecrets: 'azure(b7138765-0e9b-4a25-84e7-938471f7d1ed)'
   displayName: AKS deploy
     
 - task: Kubernetes@1
@@ -130,8 +130,8 @@ steps:
     namespace: 'default'
     command: 'expose'
     arguments: 'deployment microservice-spring-deployment --type=LoadBalancer --name=devops-usach'
-    secretType: 'dockerRegistry'
-    containerRegistryType: 'Azure Container Registry'
+    # secretType: 'dockerRegistry'
+    # containerRegistryType: 'Azure Container Registry'
   continueOnError: true
   displayName: Expose deployment
     

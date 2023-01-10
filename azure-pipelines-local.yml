@@ -1,0 +1,114 @@
+# Starter pipeline
+trigger:
+  - main
+  - feature/*
+
+# pool: "Default"
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: Gradle@3
+    inputs:
+      gradleWrapperFile: "gradlew"
+      tasks: "build"
+      publishJUnitResults: true
+      testResultsFiles: "**/TEST-*.xml"
+      javaHomeOption: "JDKVersion"
+      jdkVersionOption: "1.11"
+      sonarQubeRunAnalysis: false
+      spotBugsAnalysis: false
+    displayName: "BUILD PROJECT GRADLE"
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: "JaCoCo"
+      summaryFileLocation: "$(Build.SourcesDirectory)/build/reports/jacoco/test/jacocoTestReport.xml"
+
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: "$(Build.SourcesDirectory)"
+      contents: |
+        **/build/libs/*.jar
+        **/build/**/*.xml
+        **/build/**/*.html
+      targetFolder: "$(Build.ArtifactStagingDirectory)"
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: "$(Build.ArtifactStagingDirectory)"
+      artifactName: artefacto
+      publishLocation: "Container"
+
+  - task: DownloadBuildArtifacts@0
+    inputs:
+      buildType: "current"
+      downloadType: "single"
+      artifactName: "artefacto"
+      downloadPath: "$(Pipeline.Workspace)"
+    displayName: DOWNLOAD ARTIFACT
+
+  - script: "mkdir -p build/libs; mv $(Pipeline.workSpace)/artefacto/build/libs/ build/; chmod -R 555 build/libs"
+    displayName: MOVE RAIZ FOLDER
+
+  - task: SonarCloudPrepare@1
+    inputs:
+      SonarCloud: "SonarCloudConnection"
+      organization: "ibanezstudio"
+      projectKey: "IbanezStudio_DevOps-foundation-v3"
+      projectName: "DevOps-foundation-v3"
+      extraProperties: |
+        sonar.coverage.jacoco.xmlReportPaths=${Pipeline.Workspace}/artefacto/build/reports/jacoco/test/jacocoTestReport.xml
+    displayName: PREPARE SONARCLOUD SCANNER
+
+  - task: Gradle@3
+    inputs:
+      gradleWrapperFile: "gradlew"
+      tasks: "sonarqube"
+      javaHomeOption: "JDKVersion"
+      sonarQubeRunAnalysis: true
+      sqGradlePluginVersionChoice: "specify"
+      sonarQubeGradlePluginVersion: "3.3"
+    displayName: "Analyze current Branch"
+
+  - task: SonarCloudPublish@1
+    inputs:
+      pollingTimeoutSec: "300"
+    displayName: "Publish Analysis Results"
+  - task: Docker@2
+    inputs:
+      containerRegistry: "dockerConnection"
+      command: "login"
+    displayName: DOCKER LOGIN
+
+  - task: Docker@2
+    inputs:
+      containerRegistry: "dockerConnection"
+      repository: "estebanibannezp/spring-devops-image"
+      command: "build"
+      Dockerfile: "**/Dockerfile"
+      tags: "latest"
+    displayName: DOCKER BUILD IMAGE
+
+  - task: Docker@2
+    inputs:
+      containerRegistry: "dockerConnection"
+      repository: "estebanibannezp/spring-devops-image"
+      command: "push"
+      tags: "latest"
+    displayName: DOCKER PUSH IMAGE
+
+  - task: KubectlInstaller@0
+    inputs:
+      kubectlVersion: "latest"
+    displayName: INSTALL KUBERNETES
+
+  - task: Kubernetes@1
+    inputs:
+      connectionType: "None"
+      namespace: "default"
+      command: "apply"
+      arguments: "-f deployment-app.yaml"
+      secretType: "dockerRegistry"
+      containerRegistryType: "Azure Container Registry"
+    displayName: DEPLOYMENT KUBERNETES

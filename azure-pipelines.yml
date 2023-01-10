@@ -117,10 +117,11 @@ steps:
     kubernetesServiceEndpoint: 'kubernetesConnection'
     namespace: 'default'
     command: 'apply'
+    useConfigurationFile: true
     arguments: '-f deployment-app.yaml'
-    # secretType: 'dockerRegistry'
-    # containerRegistryType: 'Azure Container Registry'
-    # azureSubscriptionEndpointForSecrets: 'azure(b7138765-0e9b-4a25-84e7-938471f7d1ed)'
+    secretType: 'dockerRegistry'
+    containerRegistryType: 'Azure Container Registry'
+    azureSubscriptionEndpointForSecrets: 'Suscripción de Azure 1(b7138765-0e9b-4a25-84e7-938471f7d1ed)'
   displayName: AKS deploy
     
 - task: Kubernetes@1

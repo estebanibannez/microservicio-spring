@@ -9,6 +9,12 @@ pool: "Default"
 #   vmImage: ubuntu-latest
 
 steps:
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '11'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: 'PreInstalled'
+    
 - task: Gradle@3
   inputs:
     gradleWrapperFile: 'gradlew'

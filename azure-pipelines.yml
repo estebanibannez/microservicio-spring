@@ -2,9 +2,9 @@
 # trigger:
 # - main
 
-# pool: "Default"
-pool:
-  vmImage: ubuntu-latest
+pool: "Default"
+# pool:
+#   vmImage: ubuntu-latest
 
 steps:
 
@@ -74,5 +74,3 @@ steps:
     namespace: 'default'
     command: 'apply'
     arguments: '-f deployment-app.yaml'
-    secretType: 'dockerRegistry'
-    containerRegistryType: 'Azure Container Registry'

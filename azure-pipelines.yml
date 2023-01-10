@@ -113,9 +113,10 @@ steps:
 - task: Kubernetes@1
   inputs:
     connectionType: 'Azure Resource Manager'
-    azureSubscriptionEndpoint: 'azure(b7138765-0e9b-4a25-84e7-938471f7d1ed)'
+    azureSubscriptionEndpoint: 'Suscripción de Azure 1(b7138765-0e9b-4a25-84e7-938471f7d1ed)'
     azureResourceGroup: 'aks-devops-usach'
     kubernetesCluster: 'aks-devops-usach'
+    useClusterAdmin: true
     namespace: 'default'
     command: 'login'
   displayName: AKS Login
@@ -123,9 +124,10 @@ steps:
 - task: Kubernetes@1
   inputs:
     connectionType: 'Azure Resource Manager'
-    azureSubscriptionEndpoint: 'azure(b7138765-0e9b-4a25-84e7-938471f7d1ed)'
+    azureSubscriptionEndpoint: 'Suscripción de Azure 1(b7138765-0e9b-4a25-84e7-938471f7d1ed)'
     azureResourceGroup: 'aks-devops-usach'
     kubernetesCluster: 'aks-devops-usach'
+    useClusterAdmin: true
     namespace: 'default'
     command: 'apply'
     arguments: '-f kubernetes/deployment-app.yaml'
@@ -137,12 +139,13 @@ steps:
 - task: Kubernetes@1
   inputs:
     connectionType: 'Azure Resource Manager'
-    azureSubscriptionEndpoint: 'azure(b7138765-0e9b-4a25-84e7-938471f7d1ed)'
+    azureSubscriptionEndpoint: 'Suscripción de Azure 1(b7138765-0e9b-4a25-84e7-938471f7d1ed)'
     azureResourceGroup: 'aks-devops-usach'
     kubernetesCluster: 'aks-devops-usach'
+    useClusterAdmin: true
     namespace: 'default'
     command: 'expose'
-    arguments: 'deployment petclinic-deployment --type=LoadBalancer --name=devops-usach'
+    arguments: 'deployment microservice-spring-deployment --type=LoadBalancer --name=devops-usach'
     secretType: 'dockerRegistry'
     containerRegistryType: 'Azure Container Registry'
   continueOnError: true

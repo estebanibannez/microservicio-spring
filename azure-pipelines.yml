@@ -32,7 +32,22 @@ steps:
       '**/build/libs/*.jar'
       '**/build/**/*.xml'
       '**/build/**/*.html'
-    TargetFolder: 
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'artefacto'
+    publishLocation: 'Container'
+    
+- task: DownloadBuildArtifacts@1
+  inputs:
+    buildType: 'current'
+    downloadType: 'single'
+    artifactName: 'artefacto'
+    downloadPath: '$(System.ArtifactsDirectory)'
+  displayName: DOWNLOAD ARTIFACT
+
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'SonarCloudConnection'

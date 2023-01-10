@@ -1,8 +1,8 @@
 FROM openjdk:11-jre
 
-EXPOSE 8085
+EXPOSE 8080
 
-ADD build/libs/microservice-spring.jar app/microservice-spring.jar
+ADD build/libs/testing-web-0.0.1-SNAPSHOT.jar app/microservice-spring.jar
 
 WORKDIR /app
 

@@ -25,6 +25,8 @@ steps:
   inputs:
     codeCoverageTool: 'JaCoCo'
     summaryFileLocation: '$(Build.SourcesDirectory)/build/reports/jacoco/test/jacocoTestReport.xml'
+    reportDirectory: '$(Build.SourcesDirectory)/**/reports/jacoco/test/html'
+  displayName: UNIT TESTS
     
 - task: CopyFiles@2
   inputs:

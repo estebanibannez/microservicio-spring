@@ -117,7 +117,7 @@ steps:
     kubernetesServiceEndpoint: 'kubernetesConnection'
     namespace: 'default'
     command: 'apply'
-    arguments: '-f kubernetes/deployment-app.yaml'
+    arguments: '-f deployment-app.yaml'
     # secretType: 'dockerRegistry'
     # containerRegistryType: 'Azure Container Registry'
     # azureSubscriptionEndpointForSecrets: 'azure(b7138765-0e9b-4a25-84e7-938471f7d1ed)'

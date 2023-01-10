@@ -24,12 +24,23 @@ steps:
   inputs:
     codeCoverageTool: 'JaCoCo'
     summaryFileLocation: '$(Build.SourcesDirectory)/build/reports/jacoco/test/jacocoTestReport.xml'
+    
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: |
+      '**/build/libs/*.jar'
+      '**/build/**/*.xml'
+      '**/build/**/*.html'
+    TargetFolder: 
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'SonarCloudConnection'
     organization: 'ibanezstudio'
     projectKey: 'IbanezStudio_DevOps-foundation-v3'
     projectName: 'DevOps-foundation-v3'
+    extraProperties: |
+      sonar.coverage.jacoco.xmlReportPaths=${Pipeline.Workspace}/artf/build/reports/jacoco/test/jacocoTestReport.xml
   displayName: PREPARE SONARCLOUD SCANNER
 
 - task: Gradle@3

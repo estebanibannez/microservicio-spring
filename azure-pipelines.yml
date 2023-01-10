@@ -45,7 +45,7 @@ steps:
     buildType: 'current'
     downloadType: 'single'
     artifactName: 'artefacto'
-    downloadPath: '$(System.ArtifactsDirectory)'
+    downloadPath: '$(Pipeline.workSpace)'
   displayName: DOWNLOAD ARTIFACT
 
 - task: SonarCloudPrepare@1

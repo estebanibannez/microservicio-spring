@@ -1,6 +1,7 @@
 # Starter pipeline
-# trigger:
-# - main
+trigger:
+- main
+- feature/*
 
 # pool: "Default"
 pool:

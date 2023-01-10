@@ -111,4 +111,4 @@ steps:
       arguments: "-f deployment-app.yaml"
       secretType: "dockerRegistry"
       containerRegistryType: "Azure Container Registry"
-    displayName: DEPLOYMENT KUBERNETES
+    displayName: DEPLOY KUBERNETES

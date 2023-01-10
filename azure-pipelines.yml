@@ -2,9 +2,9 @@
 # trigger:
 # - main
 
-pool: "Default"
-# pool:
-#   vmImage: ubuntu-latest
+# pool: "Default"
+pool:
+  vmImage: ubuntu-latest
 
 steps:
 

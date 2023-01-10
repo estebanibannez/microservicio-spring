@@ -55,7 +55,7 @@ steps:
     projectKey: 'IbanezStudio_DevOps-foundation-v3'
     projectName: 'DevOps-foundation-v3'
     extraProperties: |
-      sonar.coverage.jacoco.xmlReportPaths=${Pipeline.Workspace}/artf/build/reports/jacoco/test/jacocoTestReport.xml
+      sonar.coverage.jacoco.xmlReportPaths=${Pipeline.Workspace}/artefacto/build/reports/jacoco/test/jacocoTestReport.xml
   displayName: PREPARE SONARCLOUD SCANNER
 
 - task: Gradle@3

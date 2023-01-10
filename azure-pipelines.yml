@@ -40,15 +40,16 @@ steps:
     sonarQubeGradlePluginVersion: '3.3'
     spotBugsAnalysis: false
 
-- task: Docker@2
-  inputs:
-    containerRegistry: 'docker'
-    command: 'login'
-  displayName: Docker Login
 
 - task: Docker@2
   inputs:
-    containerRegistry: 'docker'
+    containerRegistry: 'dockerConnection'
+    command: 'login'
+  displayName: DOCKER LOGIN
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'dockerConnection'
     repository: 'estebanibannezp/spring-devops-image'
     command: 'build'
     Dockerfile: '**/Dockerfile'
@@ -57,7 +58,7 @@ steps:
 
 - task: Docker@2
   inputs:
-    containerRegistry: 'docker'
+    containerRegistry: 'dockerConnection'
     repository: 'estebanibannezp/spring-devops-image'
     command: 'push'
     tags: 'latest'

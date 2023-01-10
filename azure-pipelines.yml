@@ -47,7 +47,9 @@ steps:
     artifactName: 'artefacto'
     downloadPath: '$(Pipeline.workSpace)'
   displayName: DOWNLOAD ARTIFACT
-
+- script: "mkdir -p build/libs; mv $(Pipeline.workSpace)/artefacto/build/libs/ build/; chmod -R 555 build/libs"
+  displayName: MOVE RAIZ FOLDER
+  
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'SonarCloudConnection'

@@ -114,7 +114,7 @@ steps:
   inputs:
     connectionType: 'Azure Resource Manager'
     azureSubscriptionEndpoint: 'Suscripción de Azure 1(b7138765-0e9b-4a25-84e7-938471f7d1ed)'
-    azureResourceGroup: 'aks-devops-usach'
+    azureResourceGroup: 'AKS'
     kubernetesCluster: 'aks-devops-usach'
     useClusterAdmin: true
     namespace: 'default'
@@ -125,7 +125,7 @@ steps:
   inputs:
     connectionType: 'Azure Resource Manager'
     azureSubscriptionEndpoint: 'Suscripción de Azure 1(b7138765-0e9b-4a25-84e7-938471f7d1ed)'
-    azureResourceGroup: 'aks-devops-usach'
+    azureResourceGroup: 'AKS'
     kubernetesCluster: 'aks-devops-usach'
     useClusterAdmin: true
     namespace: 'default'
@@ -140,7 +140,7 @@ steps:
   inputs:
     connectionType: 'Azure Resource Manager'
     azureSubscriptionEndpoint: 'Suscripción de Azure 1(b7138765-0e9b-4a25-84e7-938471f7d1ed)'
-    azureResourceGroup: 'aks-devops-usach'
+    azureResourceGroup: 'AKS'
     kubernetesCluster: 'aks-devops-usach'
     useClusterAdmin: true
     namespace: 'default'

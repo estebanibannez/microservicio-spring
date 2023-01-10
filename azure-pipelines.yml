@@ -42,3 +42,38 @@ steps:
     sonarQubeGradlePluginVersion: '3.3'
     spotBugsAnalysis: false
 
+- task: Docker@2
+  inputs:
+    containerRegistry: 'docker'
+    command: 'login'
+  displayName: Docker Login
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'docker'
+    repository: 'estebanibannezp/spring-devops-image'
+    command: 'build'
+    Dockerfile: '**/Dockerfile'
+    tags: 'latest'
+  displayName: DOCKER BUILD IMAGE
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'docker'
+    repository: 'estebanibannezp/spring-devops-image'
+    command: 'push'
+    tags: 'latest'
+  displayName: DOCKER PUSH IMAGE
+
+- task: KubectlInstaller@0
+  inputs:
+    kubectlVersion: 'latest'
+
+- task: Kubernetes@1
+  inputs:
+    connectionType: 'None'
+    namespace: 'default'
+    command: 'apply'
+    arguments: '-f deployment-app.yaml'
+    secretType: 'dockerRegistry'
+    containerRegistryType: 'Azure Container Registry'

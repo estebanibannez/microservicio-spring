@@ -99,9 +99,9 @@ steps:
     tags: 'latest'
   displayName: DOCKER PUSH IMAGE
 
-- task: KubectlInstaller@0
-  inputs:
-    kubectlVersion: 'latest'
+# - task: KubectlInstaller@0
+#   inputs:
+#     kubectlVersion: 'latest'
 
 # - task: Kubernetes@1
 #   inputs:

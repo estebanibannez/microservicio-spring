@@ -27,26 +27,27 @@ steps:
     
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: |
-      '**/build/libs/*.jar'
-      '**/build/**/*.xml'
-      '**/build/**/*.html'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: |
+        **/build/libs/*.jar
+        **/build/**/*.xml
+        **/build/**/*.html
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'artefacto'
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: artefacto
     publishLocation: 'Container'
     
-- task: DownloadBuildArtifacts@1
+- task: DownloadBuildArtifacts@0
   inputs:
     buildType: 'current'
     downloadType: 'single'
     artifactName: 'artefacto'
-    downloadPath: '$(Pipeline.workSpace)'
+    downloadPath: '$(Pipeline.Workspace)'
   displayName: DOWNLOAD ARTIFACT
+  
 - script: "mkdir -p build/libs; mv $(Pipeline.workSpace)/artefacto/build/libs/ build/; chmod -R 555 build/libs"
   displayName: MOVE RAIZ FOLDER
   
@@ -64,15 +65,16 @@ steps:
   inputs:
     gradleWrapperFile: 'gradlew'
     tasks: 'sonarqube'
-    publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
     javaHomeOption: 'JDKVersion'
     sonarQubeRunAnalysis: true
     sqGradlePluginVersionChoice: 'specify'
     sonarQubeGradlePluginVersion: '3.3'
-    spotBugsAnalysis: false
-
-
+  displayName: 'Analyze current Branch'
+    
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
+  displayName: 'Publish Analysis Results'
 - task: Docker@2
   inputs:
     containerRegistry: 'dockerConnection'

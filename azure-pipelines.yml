@@ -28,6 +28,13 @@ steps:
     reportDirectory: '$(Build.SourcesDirectory)/**/reports/jacoco/test/html'
   displayName: UNIT TESTS
     
+
+- task: BuildQualityChecks@8
+  inputs:
+    checkCoverage: true
+    coverageFailOption: 'fixed'
+    coverageType: 'blocks'
+    coverageThreshold: '85'
 - task: CopyFiles@2
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)'

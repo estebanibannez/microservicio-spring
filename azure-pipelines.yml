@@ -19,14 +19,14 @@ steps:
     jdkVersionOption: '1.11'
     sonarQubeRunAnalysis: false
     spotBugsAnalysis: false
-  displayName: 'BUILD PROJECT GRADLE'
+  displayName: 'Build Project'
 
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'JaCoCo'
     summaryFileLocation: '$(Build.SourcesDirectory)/build/reports/jacoco/test/jacocoTestReport.xml'
     reportDirectory: '$(Build.SourcesDirectory)/**/reports/jacoco/test/html'
-  displayName: UNIT TESTS
+  displayName: 'Unit test'
     
 
 - task: BuildQualityChecks@8
@@ -35,6 +35,8 @@ steps:
     coverageFailOption: 'fixed'
     coverageType: 'blocks'
     coverageThreshold: '85'
+  displayName: check test coverage > 85%
+
 - task: CopyFiles@2
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)'
@@ -56,10 +58,8 @@ steps:
     downloadType: 'single'
     artifactName: 'artefacto'
     downloadPath: '$(Pipeline.Workspace)'
-  displayName: DOWNLOAD ARTIFACT
-  
 - script: "mkdir -p build/libs; mv $(Pipeline.workSpace)/artefacto/build/libs/ build/; chmod -R 555 build/libs"
-  displayName: MOVE RAIZ FOLDER
+  displayName: Download and move artifact
   
 - task: SonarCloudPrepare@1
   inputs:
@@ -69,7 +69,7 @@ steps:
     projectName: 'DevOps-foundation-v3'
     extraProperties: |
       sonar.coverage.jacoco.xmlReportPaths=${Pipeline.Workspace}/artefacto/build/reports/jacoco/test/jacocoTestReport.xml
-  displayName: PREPARE SONARCLOUD SCANNER
+  displayName: Sonar cloud generate report scan
 
 - task: Gradle@3
   inputs:
@@ -79,17 +79,17 @@ steps:
     sonarQubeRunAnalysis: true
     sqGradlePluginVersionChoice: 'specify'
     sonarQubeGradlePluginVersion: '3.3'
-  displayName: 'Analyze current Branch'
+  displayName: 'Analyze sonar current Branch'
     
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
-  displayName: 'Publish Analysis Results'
+  displayName: 'Publish Analysis Results sonar scan'
 - task: Docker@2
   inputs:
     containerRegistry: 'dockerConnection'
     command: 'login'
-  displayName: DOCKER LOGIN
+  displayName: Docker Login
 
 - task: Docker@2
   inputs:
@@ -98,7 +98,7 @@ steps:
     command: 'build'
     Dockerfile: '**/Dockerfile'
     tags: 'latest'
-  displayName: DOCKER BUILD IMAGE
+  displayName: Docker image build
 
 - task: Docker@2
   inputs:
@@ -106,7 +106,7 @@ steps:
     repository: 'estebanibannezp/spring-devops-image'
     command: 'push'
     tags: 'latest'
-  displayName: DOCKER PUSH IMAGE
+  displayName: Docker image push
 
 # - task: KubectlInstaller@0
 #   inputs:

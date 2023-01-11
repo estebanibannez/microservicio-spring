@@ -29,14 +29,6 @@ steps:
   displayName: 'Unit test'
     
 
-- task: BuildQualityChecks@8
-  inputs:
-    checkCoverage: true
-    coverageFailOption: 'fixed'
-    coverageType: 'blocks'
-    coverageThreshold: '85'
-  displayName: check test coverage > 85%
-
 - task: CopyFiles@2
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)'
@@ -45,6 +37,15 @@ steps:
         **/build/**/*.xml
         **/build/**/*.html
     targetFolder: '$(Build.ArtifactStagingDirectory)'
+
+
+- task: BuildQualityChecks@8
+  inputs:
+    checkCoverage: true
+    coverageFailOption: 'fixed'
+    coverageType: 'blocks'
+    coverageThreshold: '85'
+  displayName: check test coverage > 85%
 
 - task: PublishBuildArtifacts@1
   inputs:
